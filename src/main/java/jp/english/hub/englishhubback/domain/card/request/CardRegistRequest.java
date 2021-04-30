@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CardRegistReqeust {
+public class CardRegistRequest {
     private String title;
     private String tag;
     private String content;
