@@ -44,7 +44,7 @@ public class UserService implements UserDetailsService {
         // PASSWORDをBcryptで暗号化
         String encodedPassword = encoder.encode(password);
         /// 登録
-        userRepository.save(new UserEntity(id, username, encodedPassword, "USER"));
+        userRepository.save(new UserEntity(id, username, encodedPassword, "ROLE_USER"));
 
         return "登録完了";
     }

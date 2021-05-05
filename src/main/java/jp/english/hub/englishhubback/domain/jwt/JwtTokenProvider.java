@@ -42,12 +42,11 @@ public class JwtTokenProvider implements TokenProvider {
     public Authentication buildAuthentication(String token) {
         // PrincipalとRolesが欲しい。
         Jws<Claims> claims = parseClaimsJws(token);
-
-        UserDetails userDetails = new UserInfo("", claims.getBody().get("name").toString(),
-                claims.getBody().get("password").toString(), claims.getBody().get("role").toString().split(","));
+        UserDetails userDetails = new UserInfo("id", claims.getBody().get("name").toString(),"password",
+                claims.getBody().get("role").toString().split(","));
 
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for (String role : claims.getBody().get("roles").toString().split(",")) {
+        for (String role : claims.getBody().get("role").toString().split(",")) {
             authorities.add(new SimpleGrantedAuthority(role));
         }
 
@@ -63,7 +62,9 @@ public class JwtTokenProvider implements TokenProvider {
 
         Claims claims = Jwts.claims();
         claims.put("role", roles);
-        userDetailMap.entrySet().stream().forEach(entry -> claims.put(entry.getKey(), entry.getValue()));
+        userDetailMap.entrySet().stream().forEach(entry -> 
+            claims.put(entry.getKey(), entry.getValue())
+        );
 
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime validity = now.plusMinutes(60);
@@ -78,7 +79,6 @@ public class JwtTokenProvider implements TokenProvider {
         UserDetails userDetail = (UserInfo) auth.getPrincipal();
         Map<String, String> map = new HashMap<>();
         map.put("name", userDetail.getUsername());
-        map.put("password", userDetail.getPassword());
         return map;
     }
 

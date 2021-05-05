@@ -42,7 +42,7 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
         // 新規登録のリクエスト
         http.authorizeRequests().antMatchers("/user/register").permitAll();
         // その他のリクエストは認証が必要
-        http.authorizeRequests().anyRequest().hasRole("USER");
+        http.authorizeRequests().anyRequest().authenticated();
 
         // JWTのフィルターをUsernamePasswordFilterの前に追加する
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
